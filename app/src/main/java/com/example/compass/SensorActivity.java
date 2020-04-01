@@ -11,7 +11,11 @@ import android.os.Bundle;
 import android.os.Vibrator;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+
 public class SensorActivity extends CompassActivity implements SensorEventListener{
+
+    private static DecimalFormat df = new DecimalFormat("0.00");
 
     TextView accelerometer;
     TextView orientation;
@@ -32,9 +36,9 @@ public class SensorActivity extends CompassActivity implements SensorEventListen
     public void onSensorChanged(SensorEvent event) {
         super.onSensorChanged(event);
 
-        String valueString = "Accelerometer x: " + super.mLastAccelerometer[0] + "\n" +
-                "Accelerometer y: " + super.mLastAccelerometer[1] + "\n" +
-                "Accelerometer z: " + super.mLastAccelerometer[2];
+        String valueString = "Accelerometer x: " + df.format(super.mLastAccelerometer[0]) + "\n" +
+                "Accelerometer y: " + df.format(super.mLastAccelerometer[1]) + "\n" +
+                "Accelerometer z: " + df.format(super.mLastAccelerometer[2]);
 
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
             accelerometer.setText(valueString);
