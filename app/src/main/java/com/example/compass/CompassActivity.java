@@ -33,6 +33,8 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
     protected boolean mLastAccelerometerSet = false;
     protected boolean mLastMagnetometerSet = false;
 
+    protected boolean northChanged = false;
+
     static final float LOWPASS_FACTOR = 0.25f;// Used for low pass filtering
 
     @Override
@@ -77,12 +79,14 @@ public class CompassActivity extends AppCompatActivity implements SensorEventLis
 
         if (mAzimuth >= 350 || mAzimuth <= 10) {
             where = "N";
-            if (Build.VERSION.SDK_INT >= 26) {
+            if (Build.VERSION.SDK_INT >= 26 && northChanged) {
                 vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE));
-            } else {
+            } else if (northChanged){
                 vibrator.vibrate(200);
             }
-        }
+            northChanged = false;
+        } else
+            northChanged = true;
         if (mAzimuth < 350 && mAzimuth > 280)
             where = "NW";
         if (mAzimuth <= 280 && mAzimuth > 260)
